@@ -103,13 +103,13 @@ tprob(y, 8:15)
 ## produce a summary table for a transfer object
 summary(y)
 
-## histogram (default)
+## barplot of probabilities (default)
 plot(y, ptype = 0)
 plot(y)
 
 ## barplot of transfer frequencies
 plot(y, ptype = 1)
 
-## barplot of transfer probabilities
+## histogram
 plot(y, ptype = 2)
 }

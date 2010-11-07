@@ -16,8 +16,8 @@
     \code{plot} method for \code{transfer} objects. Allows histograms,
     barplots of frequencies and probabilities of recovered glass
     fragments to be plotted. The plot type can be specified as (0 =
-    histogram, 1 = barplot of frequencies or 2 = barplot of
-    probabilities). Histogram is set as the default plot.
+    barplot of probabilities, 1 = barplot of frequencies or 2 =
+    histogram). A barplot of probabilities is set as the default plot.
 }}}
 \keyword{methods}
 \keyword{plot}

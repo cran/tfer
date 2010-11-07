@@ -13,14 +13,14 @@
 \tabular{ll}{
 Package: \tab tfer\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2010-10-13\cr
+Version: \tab 1.1\cr
+Date: \tab 2010-11-07\cr
 License: \tab GPL-2\cr
 LazyLoad: \tab yes\cr
 Depends: \tab methods\cr
 }
 
-The \code{tfer} package provides functions for simulating the number the
+The \code{tfer} package provides functions for simulating the number of
 recovered glass fragments given the conditions set by the user on
 factors affecting the transfer, persistence and recovery of glass
 fragments. A large simulation size will provide precise estimates of
@@ -52,14 +52,14 @@ and returns a list of input parameters, five-number summary and
 probabilities of transfer.
 
 The user has three plotting options for producing a graphical view of a
-\code{transfer} object. The plot type can be specified as (0 =
-histogram, 1 = barplot of frequencies or 2 = barplot of probabilities).
-Histogram is set as the default. 
+\code{transfer} object. The plot type can be specified as (0 = barplot
+of probabilities, 1 = barplot of frequencies or 2 = histogram).
+A barplot of probabilities is set as the default. 
 }
 \author{
   James Curran and TingYu Huang
 
-  Maintainer: TingYu Huang <\email{thua041@aucklanduni.ac.nz}>
+  Maintainer: TingYu Huang <thua041@aucklanduni.ac.nz>
 }
 \references{
   Curran, J. M., Hicks, T. N. & Buckleton, J. S. (2000). \emph{Forensic
@@ -87,13 +87,13 @@ tprob(y, 8:15)
 ## produce a summary table for a transfer object
 summary(y)
 
-## histogram (default)
+## barplot of transfer probabilities (default)
 plot(y, ptype = 0)
 plot(y)
 
 ## barplot of transfer frequencies
 plot(y, ptype = 1)
 
-## barplot of transfer probabilities
+## histogram
 plot(y, ptype = 2)
 }
