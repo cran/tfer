@@ -20,8 +20,10 @@ transfer(
   ustarj = 0.1,
   lR = 0.5,
   uR = 0.7,
-  t = 1.5,
+  lt = 1,
+  ut = 2,
   r = 0.5,
+  timeDist = c("negbin", "cnegbin", "uniform"),
   loop = FALSE
 )
 }
@@ -64,9 +66,21 @@ in the lab}
 \item{uR}{Upper bound on the percentage of fragments expected to be detected
 in the lab}
 
-\item{t}{Time between commission of crime and apprehension of suspect}
+\item{lt}{Lower bound on time between commission of crime and apprehension of suspect}
+
+\item{ut}{Upper bound on time between commission of crime and apprehension of suspect}
 
 \item{r}{Probability r in ti ~ NegBinom(t, r)}
+
+\item{timeDist}{the distribution for the random amount of time between the commission of
+the crime and the apprehension of the suspect. There are three choices \code{"negbin"},
+\code{"cnegbin"}, and \code{"uniform"}. Before talking about these it should be noted that
+if \code{lt} is equal to \code{ut} - then there is no randomness in this calculation. If
+\code{lt} does not equal \code{ut}, then the average of these two values is used in the
+two negative binomial options: \code{"negbin"} and \code{"cnegbin"}. The difference betweeen
+them is that \code{"cnegbin"} is a constrained negative binomial where the allowable times are
+constrained to be between \code{lt} and \code{ut}. If \code{"uniform"} is selected, then
+a uniformly distributed random time between \code{lt} and \code{ut} is used in each iteration.}
 
 \item{loop}{if \code{TRUE} an element by element version of the simulation is used,
 if \code{FALSE} then a (mostly) vectorised element version of the simulation is used. 

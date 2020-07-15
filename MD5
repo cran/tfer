@@ -1,5 +1,5 @@
-44ea8ab565e84479effe0d4b380a108c *DESCRIPTION
-ae2050d95461a73987f7171ae99614d2 *NAMESPACE
+aa205a911b11fc72cf4704a6f1078b0d *DESCRIPTION
+87ab1135008475ba2b62700a604941c8 *NAMESPACE
 057cfd886a080ae3188231b8a34d41ad *R/getParams.R
 6f62a981ac94e376b3c2cf879e218e54 *R/getValues.R
 1969379f9aa26d6a0f75cdfe23ee1779 *R/plot.transfer.R
@@ -8,11 +8,11 @@ ae2050d95461a73987f7171ae99614d2 *NAMESPACE
 eb92c2458f436787299435fa349b08ff *R/summary.transfer.R
 6f61b422f879e20d779ca290fb02b376 *R/tferR-package.R
 e9d3792419ab4649731e27171ae907f0 *R/tprob.R
-3747002f1362b96273297cd0d41bcf36 *R/transfer.R
+9587c84ee1a10efb170f11d631e63dc0 *R/transfer.R
 0d0fe3a3d9dd2e80fc7c4d61e50f6f31 *man/getParams.Rd
 7b9860f0071dfdc9f95090207f0d6e8d *man/getValues.Rd
 35778558a9c6d6cb9b17cd016bf2d1c9 *man/plot.tfer.Rd
 fd9a55f2f1f7b9370cdaf53630295bd8 *man/print.transfer.Rd
 8a7261da0d7c7ae2298d306e1c33003f *man/summary.transfer.Rd
 61b31dd8e116b8d6cc13a82c2d81fe7c *man/tprob.Rd
-8ec38e078980eeecadcce7a559553c8d *man/transfer.Rd
+3c5d1d9d9cb3cf8e7810fd05e51e757e *man/transfer.Rd

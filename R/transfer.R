@@ -27,8 +27,18 @@
 #'   in the lab
 #' @param uR Upper bound on the percentage of fragments expected to be detected
 #'   in the lab
-#' @param t Time between commission of crime and apprehension of suspect
+#' @param lt Lower bound on time between commission of crime and apprehension of suspect
+#' @param ut Upper bound on time between commission of crime and apprehension of suspect
 #' @param r Probability r in ti ~ NegBinom(t, r)
+#' @param timeDist the distribution for the random amount of time between the commission of
+#' the crime and the apprehension of the suspect. There are three choices \code{"negbin"},
+#' \code{"cnegbin"}, and \code{"uniform"}. Before talking about these it should be noted that
+#' if \code{lt} is equal to \code{ut} - then there is no randomness in this calculation. If
+#' \code{lt} does not equal \code{ut}, then the average of these two values is used in the
+#' two negative binomial options: \code{"negbin"} and \code{"cnegbin"}. The difference betweeen
+#' them is that \code{"cnegbin"} is a constrained negative binomial where the allowable times are
+#' constrained to be between \code{lt} and \code{ut}. If \code{"uniform"} is selected, then
+#' a uniformly distributed random time between \code{lt} and \code{ut} is used in each iteration.
 #' @param loop if \code{TRUE} an element by element version of the simulation is used,
 #' if \code{FALSE} then a (mostly) vectorised element version of the simulation is used. 
 #' The results from the two methods appear to be almost identical - they won't be the 
@@ -44,7 +54,7 @@
 #' }
 #' The returned object has S3 class types tfer and transfer for backwards compatibility 
 #' 
-#' @importFrom stats rgamma rnorm rbinom rnbinom rpois runif
+#' @importFrom stats dnbinom rgamma rnorm rbinom rnbinom rpois runif
 #' 
 #' @export
 #' @author James Curran and TingYu Huang
@@ -88,8 +98,14 @@
 transfer = function (N = 10000, d = 0.5, deffect = TRUE, lambda = 120,
                      Q = 0.05, l0 = 0.8, u0 = 0.9, lstar0 = 0.1, ustar0 = 0.15,
                      lj = 0.45, uj = 0.7, lstarj = 0.05, ustarj =0.1, lR = 0.5,
-                     uR = 0.7, t = 1.5, r = 0.5,
+                     uR = 0.7, lt = 1, ut = 2, r = 0.5,
+                     timeDist = c("negbin", "cnegbin", "uniform"),
                      loop = FALSE) {
+  
+  ## TODO - paramater range checks
+  
+  timeDist = match.arg(timeDist)
+  
   
   results = rep(NA,N)
   paramList = list(N = N, 
@@ -102,8 +118,20 @@ transfer = function (N = 10000, d = 0.5, deffect = TRUE, lambda = 120,
               lj = lj, uj = uj,
               lstarj = lstarj, ustarj = ustarj,
               lR = lR, uR = uR, 
-              t = t, 
-              r = r)
+              lt = lt,
+              ut = ut,
+              r = r,
+              timeDist = timeDist)
+  
+  
+  if((paramList$timeDist == "cnegbin" || paramList$timeDist == "uniform")
+      && paramList$lt != paramList$ut){
+    ctimes = seq(floor(paramList$lt), ceiling(paramList$ut), by = 1)
+    tbar = 0.5 * (paramList$lt + paramList$ut)
+    probs = dnbinom(ctimes, tbar, r)
+    probs = probs / (1 - sum(probs))
+  }
+  
   
   if(loop){ 
     for (i in 1:N) {
@@ -111,7 +139,19 @@ transfer = function (N = 10000, d = 0.5, deffect = TRUE, lambda = 120,
       lambdai = rnorm(1, paramList$lambda, paramList$lambda / 2)
       ##weight = rnorm(1, 1, 0.5)
       ##lambdai = lambda*weight
-      ti = rnbinom(1, paramList$t, paramList$r)
+      
+      if(lt == ut){
+        ti = lt
+      }else{
+        if(timeDist == "negbin"){
+          ti = rnbinom(1, 0.5 * (paramList$lt + paramList$ut), paramList$r)
+        }else if(timeDist == "cnegbin"){
+          ti = sample(ctimes, size = 1, prob = probs)
+        }else{
+          ti = sample(ctimes, size = 1)
+        }
+      }
+      
       
       x0 = if(paramList$deffect){
         rpois(1, abs(lambdai * exp(1 - (di / paramList$d))))
@@ -138,7 +178,19 @@ transfer = function (N = 10000, d = 0.5, deffect = TRUE, lambda = 120,
     lambdai = rnorm(N, paramList$lambda, paramList$lambda * 0.5)
     ##weight = rnorm(1, 1, 0.5)
     ##lambdai = lambda*weight
-    ti = rnbinom(N, paramList$t, paramList$r)
+    
+    if(lt == ut){
+      ti = rep(paramList$ut, N)
+    }else{
+      if(timeDist == "negbin"){
+        ti = rnbinom(N, (paramList$lt + paramList$ut) * 0.5, paramList$r)
+      }else if(timeDist == "cnegbin"){
+        ti = sample(ctimes, size = N, prob = probs, replace = TRUE)
+      }else{
+        ti = sample(ctimes, size = N, replace = TRUE)
+      }
+    }
+    
     
     x0 = if(paramList$deffect){
       rpois(N, abs(lambdai * exp(1 - (di / paramList$d))))
